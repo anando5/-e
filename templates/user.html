@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>{{APP_NAME}} | {{page_user.username.capitalize()}}</title>
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+  MathJax.Hub.Config({
+  "tex2jax": { inlineMath: [ [ '$', '$' ] ], processEscapes: true },
+  TeX: {equationNumbers: {autoNumber: "AMS"} }
+  });
+</script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+var mergeNodes = function (a,b) { return [].slice.call(a).concat([].slice.call(b)); }
+google.load("visualization", "1", {packages:["corechart"]});
+<!-- Last Week Summary Chart  -->
+var showAllActvs = function () {
+  p_actvs = document.getElementsByClassName('p_actv_item');
+  for (var i=0; i < p_actvs.length; i++) {p_actvs[i].style.display = ''}
+}
+google.setOnLoadCallback(drawLastWeekSummaryChart);
+function drawLastWeekSummaryChart() {
+    var data = google.visualization.arrayToDataTable([
+        ['Kind', 'Counts'],
+        {% for s in p_stats %}{% if p_stats[s] %}['{{s}}', {{p_stats[s]}}],{% endif %}{% endfor %}
+    ]);
+    var options = {legend: 'none'};
+    var lastWeekSummaryChart = new google.visualization.ColumnChart(document.getElementById('p_stats'));
+    
+    function lastWeekSummarySelectHandler() {
+        var selectedItem = lastWeekSummaryChart.getSelection()[0];
+        if (selectedItem) 
+	{
+            var u_kind = data.getValue(selectedItem.row, 0);
+            var p_actvs = document.getElementsByClassName('p_actv_item');
+            for (var i=0; i < p_actvs.length; i++) {p_actvs[i].style.display = 'none';}
+	    var visible_actvs = [];
+	    if (u_kind == 'Notebooks') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('Notebooks'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('NotebookNotes'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('NoteComments'));}
+	    else if (u_kind == 'Code') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('CodeRepositories'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('CodeComments'));}
+	    else if (u_kind == 'Datasets') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('DataSets'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('DataConcepts'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('DataRevisions'));}
+	    else if (u_kind == 'Wiki') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('WikiRevisions'));}
+	    else if (u_kind == 'Writings') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('CollaborativeWritings'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('WritingRevisions'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('WritingComments'));}
+	    else if (u_kind == 'Forum') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('ForumThreads'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('ForumComments'));}
+	    else if (u_kind == 'Bibliography') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('BiblioItems'));
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('BiblioComments'));}
+	    else if (u_kind == 'Images') {
+		visible_actvs = mergeNodes(visible_actvs, document.getElementsByClassName('Images'));}
+	    else {console.log('Error, unrecognized kind' + u_kind);}
+	    for (var i=0; i < visible_actvs.length; i++) { visible_actvs[i].style.display = '';}
+        }
+        else {
+            showAllActvs();
+        }
+    }
+    
+    google.visualization.events.addListener(lastWeekSummaryChart, 'select', lastWeekSummarySelectHandler);
+    lastWeekSummaryChart.draw(data, options);
+}
+<!-- Project contributions Chart  -->
+google.setOnLoadCallback(drawPieChart);
+function drawPieChart() {
+    var data = google.visualization.arrayToDataTable([
+        ['Project', 'Counts'],
+        {% for p in p_counts %}['{{p.get().name}}',{{p_counts[p]}}],{% endfor %}
+    ]);
+    var options = {title: '{% if self_user_p %}C{% else %}Public c{% endif %}ontributions in the last 30 days'};
+    var pieChart = new google.visualization.PieChart(document.getElementById('p_pie_chart'));
+    pieChart.draw(data, options);
+}
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-3">
+      <h2>{{page_user.username.capitalize()}}</h2>
+      <hr>
+      <div class="text-center">
+	{% if page_user.gplusid %}<div class="g-person" data-href="https://plus.google.com/{{page_user.gplusid}}" data-width="180"></div>
+	{% else %}<img class="img-responsive img-thumbnail" src="{{page_user.get_profile_image(150)}}" style="display:block;margin:0 auto;" aria-label="Profile image">{% endif %}
+      </div>
+      {% if page_user.about_me %}
+      <hr>
+      <a style="margin:0 auto;max-width:150px;" data-toggle="modal" href="#aboutInfo" class="btn btn-default btn-block">About</a>
+      <div class="modal fade" id="aboutInfo" tabindex="-1" role="dialog" aria-labelledby="aboutInfoLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" arial-hidden="true">&times;</button>
+	      <h4 class="modal-title">About</h4>
+	    </div>
+	    <div class="modal-body">
+	      {{page_user.about_me | md | safe}}
+	    </div>
+	    {% if self_user_p %}
+	    <div class="modal-footer">
+	      <a class="btn btn-default" href="/settings"><span class="glyphicon glyphicon-cog"></span> Edit settings</a>
+	    </div>
+	    {% endif %}
+	  </div>
+	</div>
+      </div>
+      {% endif %}
+      <br/>
+      <p class="text-center"><a href="/{{page_user.username}}/outreach">Public outreach page</a></p>
+    </div>
+
+    <div class="col-md-5">
+      <h2 id="main-content">Last week's summary</h2>
+      <hr>
+      {% if recent_actv["Projects"] %}
+      <div id="p_stats"></div>
+      <small class="help-block">Click the chart's columns to filter the activities list below</small>
+      <div class="panel panel-default">
+	<ul class="list-group" role="log">
+	  {% for a in recent_actv["Projects"] %}
+	  {% if a.is_open_p() or (user and a.actv_kind == "Projects" and a.relative_to.get().user_is_author(user)) %}
+	  <li class="list-group-item p_actv_item {{a.item.kind()}}">
+	    <small class="text-muted">{{a.date.strftime("%d %b %Y")}}</small> {{a.description_html(hide_username_p = True) | safe}}
+	  </li>
+	  {% endif %}
+	  {% endfor %}
+	</ul>
+      </div>
+      {% else %}
+      <p>There has been no activity for 7 days or more</p>
+      {% endif %}
+    </div>
+
+    <div class="col-md-4">
+      <h2>{% if self_user_p %}Your projects{% else %}Projects{% endif %}</h2>
+      <hr>
+      {% if projects %}
+      <div id="p_pie_chart"></div><br/>
+      <div class="panel-body">
+	<div class="panel-group" id="accordion1">
+	  {% for p in projects %}
+	  <div class="panel panel-default">
+            <div class="panel-heading">
+	      <h4 class="panel-title">
+		<a class="accordion-toggle pull-right" data-toggle="collapse" data-parent="#accordion1" href="#{{p.key.integer_id()}}">
+		  <span class="glyphicon glyphicon-info-sign"></span></a>
+		<a href="/{{p.key.integer_id()}}">{{p.name | safe}}</a>
+	      </h4>
+            </div>
+            <div class="panel-collapse collapse" id="{{p.key.integer_id()}}">
+		<div class="panel-body">
+		  {{p.description | md | safe}}
+		  <p class="text-muted">Last updated: {{p.last_updated.strftime("%d %b %Y")}}</p>
+		</div>
+            </div>
+	  </div>
+	  {% endfor %}
+	</div>
+      </div>
+      {% else %}
+      <p>You don't have any projects yet.</p>
+      {% endif %}
+      {% if self_user_p %}
+      <div class=""><a class="btn btn-success pull-right" href="/new_project"><span class="glyphicon glyphicon-plus"></span> New project</a></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

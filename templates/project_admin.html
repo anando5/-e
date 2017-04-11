@@ -1,0 +1,193 @@
+{% extends "project_base.html" %}
+
+{% block breadcrumbs %}
+<li class="active">Admin</li>
+{% endblock %}
+
+{% block p_content %}
+
+<h2 id="main-content" class="page-header">Project settings
+  <a href="#project-menu" class="skiptocontent">Skip to project menu</a></h2>
+
+<form method="post" role="form">
+  <div class="from-group {{nClass}}">
+    <label for="projectName">Project name</label>
+    <input id="projectName" type="text" name="p_name" class="form-control"
+	   value="{{p_name}}" placeholder="The name for your project" />
+  </div>
+  <br/>
+  <div class="form-group {{dClass}}">
+    <label for="projectDescription">Description</label>
+    <textarea id="projectDescription" name="p_description" class="form-control" rows="10"
+	      placeholder="Description of the project.">{{p_description}}</textarea>
+  </div>
+  <span class="help-block">Click <a href="/static/edit_help.html" target="_blank">here</a> to view some editing help (opens in a new window).</span>
+
+  <div class="form-group">
+    <label>Default visibility</label>
+    <a data-toggle="modal" href="#visibilityHelp"><span class="glyphicon glyphicon-info-sign"></span></a>
+    <div class="modal fade" id="visibilityHelp" tabindex="-1" role="dialog" aria-labelledby="visibilityHelpLabel" aria-hidden="true">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" arial-hidden="true">&times;</button>
+	    <h4 class="modal-title">Default visibility</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p>Each activity inside a given project can be set as<br/> <em><span class="glyphicon glyphicon-eye-open"></span> Visible to the general public</em> (in which case everyone could see it)<br/> or<br/> <span class="glyphicon glyphicon-eye-close"></span> Visible only to members of this project (you need to be logged in and be a member of the project to view it). </p>
+	    <p>You can have a different visibility choice for each activity. This <strong>Default visibility</strong> option sets the default choice for new elements in this project. You can change this setting later and you can change also the visibility for each individual activity.</p>
+	    <p>Keep in mind that currently here at <em>{{APP_NAME}}</em> the project's name and description are always publicly visible</p>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <div class="radio">
+      <label>
+	<input type="radio" name="open_p" value="True" {% if project.default_open_p %}checked{% endif %}/>
+	<span class="glyphicon glyphicon-eye-open"></span>
+	Visible to the general public.
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+	<input type="radio" name="open_p" value="False" {% if not project.default_open_p %}checked{% endif %}/>
+	<span class="glyphicon glyphicon-eye-close"></span>
+	Visible only to members of this project.
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Default license</label>
+    <a data-toggle="modal" href="#licenseHelp"><span class="glyphicon glyphicon-info-sign"></span></a>
+    <div class="modal fade" id="licenseHelp" tabindex="-1" role="dialog" aria-labelledby="licenseHelpLabel" aria-hidden="true">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" arial-hidden="true">&times;</button>
+	    <h4 class="modal-title">Default license</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p>Choosing a <a href="https://creativecommons.org/licenses/" target="_blank">Creative Commons license</a> for this project grants copyright permissions for its content so it can be copied, distributed, edited, remixed and built upon while retaining authorship recognition. Licensing a project under a Creative Commons license helps its dissemination.</p>
+	    <p>You can look at the <a href="https://creativecommons.org/licenses/" target="_blank">Creative Commons licenses descriptions</a> to learn about their differences and choose the most appropriate for you. Be sure to consult all project members before changing licenses, they might have different opinions.</p>
+	    <p>Choosing a Creative Commons license will cause an appropriate banner to appear in every page related to this project.</p>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <div class="radio">
+      <label>
+	<input type="radio" name="default_license" value="CC BY" {% if project.default_license == "CC BY" %}checked{% endif %}/>
+	<img alt="Creative Commons CC BY license" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png" />
+	Creative Commons Attribution
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+	<input type="radio" name="default_license" value="CC BY-SA" {% if project.default_license == "CC BY-SA" %}checked{% endif %}/>
+	<img alt="Creative Commons CC BY-SA license" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+	Creative Commons Attribution-ShareAlike
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+	<input type="radio" name="default_license" value="CC BY-ND" {% if project.default_license == "CC BY-ND" %}checked{% endif %}/>
+	<img alt="Creative Commons CC By license" style="border-width:0" src="http://i.creativecommons.org/l/by-nd/4.0/80x15.png" />
+	Creative Commons Attribution-NoDerivs
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+	<input type="radio" name="default_license" value="CC BY-NC" {% if project.default_license == "CC BY-NC" %}checked{% endif %}/>
+	<img alt="Creative Commons CC By license" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/4.0/80x15.png" />
+	Creative Commons Attribution-NonCommercial
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+	<input type="radio" name="default_license" value="CC BY-NC-SA" {% if project.default_license == "CC BY-NC-SA" %}checked{% endif %}/>
+	<img alt="Creative Commons CC By license" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" />
+	Creative Commons Attribution-NonCommercial-ShareAlike
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+	<input type="radio" name="default_license" value="CC BY-NC-ND" {% if project.default_license == "CC BY-NC-ND" %}checked{% endif %}/>
+	<img alt="Creative Commons CC By license" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
+	Creative Commons Attribution-NonCommercial-NoDerivs
+      </label>
+    </div>
+
+    <div class="radio">
+      <label>
+	<input type="radio" name="default_license" value="" {% if not project.default_license %}checked{% endif %}/>
+	Not specified
+      </label>
+    </div>
+  </div>
+
+
+
+<!---
+  <p>You will receive an email notification for:</p>
+  <div class="checkbox">
+    <label for="wikicb">An update in a <strong>wiki</strong> page</label>
+    <input id="wikicb" type="checkbox" value="checked" name="wiki_p" {{wiki_p}}/>
+  </div>
+  <div class="checkbox">
+    <label for="ncb">A new note in a <strong>notebook</strong></label>
+    <input id="ncb" type="checkbox" value="checked" name="notebooks_p" {{notebooks_p}}/>
+  </div>
+  <div class="checkbox">
+    <label for="cwcb">A change in a <strong>collaborative writing</strong></label>
+    <input id="cwcb" type="checkbox" value="checked" name="writings_p" {{writings_p}}/>
+  </div>
+  <div class="checkbox">
+    <label for="codecb">Updates to a <strong>source code</strong> repository</label>
+    <input id="codecb" type="checkbox" value="checked" name="code_p" {{code_p}}/>
+  </div>
+  <div class="checkbox">
+    <label for="dscb">Updates in a <strong>dataset</strong></label>
+    <input id="dscb" type="checkbox" value="checked" name="datasets_p" {{datasets_p}}/>
+  </div>
+  <div class="checkbox">
+    <label for="ftcb">A new thread in the <strong>forum</strong></label>
+    <input id="ftcb" type="checkbox" value="checked" name="forum_threads_p" {{forum_threads_p}}/>
+  </div>
+  <div class="checkbox">
+    <label for="fpcb">A new post in a <strong>forum</strong> thread</label>
+    <input id="fpcb" type="checkbox" value="checked" name="forum_posts_p" {{forum_posts_p}}/>
+  </div>
+--->
+  <button type="submit" class="btn btn-success">Save changes</button>
+  <button type="button" class="btn btn-default" onClick="window.location = '/{{project.key.integer_id()}}'">Cancel</button>
+
+  {% if info_message %}<div class="alert alert-success" style="margin-top:10px;">
+    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+    {{info_message}}</div>{% endif %}
+  {% if error %}<div class="alert alert-danger" style="margin-top:10px;">
+    <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+    {{error}}</div>{% endif %}
+
+</form>
+
+<h3>Members of this project</h3>
+<div style="margin-bottom:14px;">
+  <ul class="nav nav-pills">
+    {% for a in authors %}
+    <li><a href="/{{a.username}}"><img src="{{a.get_profile_image(20)}}" aria-hidden="true"/> {{a.username.capitalize()}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<a class="btn btn-success" href="/{{project.key.integer_id()}}/invite">
+  <span class=" glyphicon glyphicon-plus"></span> Invite a collaborator
+</a>
+
+{% endblock %}

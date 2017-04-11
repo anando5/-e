@@ -1,0 +1,12 @@
+{% extends "wiki_base.html" %}
+
+    
+{% block w_content %}
+
+{% if wikipage %}
+{{wikitext | md(project.key.integer_id()) | safe}}
+{% else %}
+<em>This page doesn't exist yet. Click <a href="/{{project.key.integer_id()}}/wiki/edit/{{wikiurl}}">here</a> to create it.</em>
+{% endif %}
+
+{% endblock %}

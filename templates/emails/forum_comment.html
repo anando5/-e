@@ -1,0 +1,3 @@
+<p><span class="date">{{comment.date.strftime("%d-%b-%Y %H:%M")}} (server time)</span>. Project: <a href="{{project_absolute_link}}">{{project.name}}</a>:</p>
+<p><a href="{{author_absolute_link}}">{{author.username.capitalize()}}</a> made a new comment in the thread <a href="{{thread_absolute_link}}">{{thread.title}}</a></p>
+<div class="content">{{comment.comment | md | safe}}</div>

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>{{APP_NAME}} | Signup</title>
+<script type="text/javascript">
+  var enableSignUp = function () {
+     var btn = document.getElementById("createAccBtn");
+     var cb = document.getElementById("TOScb");
+     if (cb.checked) { btn.disabled = false;}
+     else { btn.disabled = true;}
+  };
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container form-container">
+  <h2>Sign Up</h2>
+
+  {% if user %}
+  <p>Welcome back {{user.username}}, you are already logged in.</p>
+  <p>If you are not {{user.username}} you can <a href="/logout">Logout</a></p>
+
+  {% else %}
+  <form method="post" role="form" style="margin-bottom: 20px;">
+    <div class="form-group{% if error_username %} has-error{% endif %}">
+      <input type="text" name="usern" value="{{usern}}" placeholder="Username" class="form-control input-lg input-group first"/>
+    </div>
+
+    <div class="form-group{% if error_password %} has-error{% endif %}">
+        <input type="password" name="password" value="" placeholder="Password" class="form-control input-lg input-group" />
+    </div>
+
+    <div class="form-group{% if error_verify %} has-error{% endif %}">
+      <input type="password" name="verify" value="" placeholder="Write your password again" class="form-control input-lg input-group"/>
+    </div>
+
+    <div class="form-group {% if error_email %} has-error{% endif %}">
+      <input type="text" name="email" value="{{email}}" placeholder="Email address" class="form-control input-lg last input-group"/>
+    </div>
+
+    <div class="form-group">
+	<div class="checkbox">
+	  <label>
+	    <input type="checkbox" id="TOScb" onClick="enableSignUp();"/> I have read and agree to {{APP_NAME}}'s <a href="/terms" target="_blank">Terms of Service <span class="glyphicon glyphicon-new-window"></span></a>
+	  </label>
+	</div>
+      </div>
+    <button type="submit" class="btn btn-default btn-new btn-block btn-lg" id="createAccBtn" disabled>Create account</button>
+
+  </form>
+  {% if error %}<div class="alert alert-danger">{{error | safe}}</div>{% endif %}
+  {% if info %}<div class="alert alert-success">{{info | safe}}</div>{% endif %}
+
+  {% endif %}
+</div>
+
+<script>
+    $("#signup-navbar").addClass("active");
+</script>
+{% endblock %}

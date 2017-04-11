@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <style type="text/css">
+      body {background: #F5F5F5;}
+      .premessage {margin-left: 5%; margin-bottom: 1em;}
+      .wrapper {background: white; width: 90%; margin-left: 5%; padding-top: 0.5em; margin: 0 auto; box-shadow: 0em 0.1em 0.2em #C0C0C0;}
+      .item {margin-top: 1em; padding: 0.5em;}
+      .title {font-size: 1.1em; font-weigth: bold; margin-left: 1em;}
+      .content {width: 95%; margin-left: 2%; background: #F0F0F0; border: 1px solid #C0C0C0; padding: 0.2em;}
+      .date {font-size: 0.9em; color: #808080;}
+      .footer {border-top: 2px solid #777777; background: #E0E0E0; padding-top: 0.5em; padding-bottom: 0.5em;}
+    </style>
+  </head>
+  <body>
+    <div class="premessage">There has been some activity in your projects at <a href="{{APP_URL}}">{{APP_NAME}}</a></div>
+    <div class="wrapper">
+
+      <div class="top-index"><ul>
+      {% if NotebookNotes %}<li><a href="#nnotes">Notebook Notes ({{NotebookNotes | count}})</a></li>{% endif %}
+      {% if NoteComments %}<li><a href="#ncomments">Comments in Notebooks' Notes ({{NoteComments | count}})</a></li>{% endif %}
+      {% if WritingRevisions %}<li><a href="#collabws">Collaborative Writings ({{WritingRevisions | count}})</a></li>{% endif %}
+      {% if WikiRevisions %}<li><a href="#wiki">Wiki changes ({{WikiRevisions | count}})</a></li>{% endif %}
+      {% if CodeRepositories %}<li><a href="#coderepos">New Code Repositories ({{CodeRepositories | count}})</a></li>{% endif %}
+      {% if CodeComments %}<li><a href="#codecomments">Comments in Code Repositories ({{CodeComments | count}})</a></li>{% endif %}
+      {% if DataRevisions %}<li><a href="#datarevs">New Data Revisions ({{DataRevisions | count}})</a></li>{% endif %}
+      {% if ForumThreads %}<li><a href="#forumts">New Forum Threads ({{ForumThreads | count}})</a></li>{% endif %}
+      {% if ForumComments %}<li><a href="#forumcomments">New answers in existing Forum Threads ({{ForumComments | count}})</a></li>{% endif %}
+      </ul></div>
+
+      {% if NotebookNotes %}<hr><div class="title" id="nnotes">Notebook Notes ({{NotebookNotes | count}})</div>
+      {% for item in NotebookNotes %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+      
+      {% if NoteComments %}<hr><div class="title" id="ncomments">Comments in Notebooks' Notes ({{NoteComments | count}})</div>
+      {% for item in NoteComments %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      {% if WritingRevisions %}<hr><div class="title" id="colllabws">Collaborative Writings ({{WritingRevisions | count}})</div>
+      {% for item in WritingRevisions %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      {% if WikiRevisions %}<hr><div class="title" id="wiki">Wiki changes ({{WikiRevisions | count}})</div>
+      {% for item in WikiRevisions %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      {% if CodeRepositories %}<hr><div class="title" id="coderepos">New Code Repositories ({{CodeRepositories | count}})</div>
+      {% for item in CodeRepositories %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      {% if CodeComments %}<hr><div class="title" id="codecomments">Comments in Code Repositories ({{CodeComments | count}})</div>
+      {% for item in CodeComments %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      {% if DataRevisions %}<hr><div class="title" id="datarevs">New Data Revisions ({{DataRevisions | count}})</div>
+      {% for item in DataRevisions %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      {% if ForumThreads %}<hr><div class="title" id="forumts">New Forum Threads ({{ForumThreads | count}})</div>
+      {% for item in ForumThreads %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      {% if ForumComments %}<hr><div class="title" id="forumcomments">New answers in existing Forum Threads ({{ForumComments | count}})</div>
+      {% for item in ForumComments %}<div class="item">{{item.html | safe}}</div>{% endfor %}
+      {% endif %}
+
+      <div class="footer">
+	You can stop receiving these emails by visiting your <em>Admin</em> tab for each project.
+      </div>
+    </div>
+
+  </body>
+</html>

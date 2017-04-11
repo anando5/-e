@@ -1,0 +1,45 @@
+.well {
+    border-radius: 0 !important;
+    background: #fff;
+    padding: 12px 15px;
+}
+
+.well a {
+    border-radius: 0 !important;
+}
+
+.page-header {
+    margin-top: 0;
+}
+
+.btn-edit {
+    color:gray;
+}
+
+.btn-edit:hover {
+    color:black
+}
+
+.wikitext h1 { font-size: 1.8em; border-bottom: 1px solid #AAA;}
+.wikitext h2 { font-size: 1.2em; border-bottom: 1px solid #DDD;}
+.wikitext h3 { font-size: 1em;  }
+.wikitext h4 { font-size: 0.8em;}
+.wikitext h5 { font-size: 0.6em;}
+.wikitext h6 { font-size: 0.5em;}
+
+.toc {
+    background-color: #F9F9F9;
+    border: 1px solid #AAA;
+    padding: 0.5em;
+    display: table}
+.toctitle {
+    display: block;
+    text-align: center;
+    font-weight: bold;}
+
+blockquote {font-size: 1em;}
+
+.imageTitle {
+    text-align: center;
+    margin-top: 1em;
+}

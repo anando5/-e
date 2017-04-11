@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>{{APP_NAME}}</title>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript">
+  MathJax.Hub.Config({
+  "tex2jax": { inlineMath: [ [ '$', '$' ] ], processEscapes: true },
+  TeX: {equationNumbers: {autoNumber: "AMS"} }
+  });
+</script>
+
+<style>
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+{% if user %}
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-5" role="menu">
+	<h2 role="heading" id="main-content" class="page-heading">Your projects</h2>
+
+	<hr>
+
+	    {% if projects %}
+	    {% for p in projects %}
+		<a class="project-link" href="/{{p.key.integer_id()}}">
+			<h3>{{p.name | safe}}</h3>
+			<p>
+				{{p.description | safe | truncate(190)}}
+			</p>
+		</a>
+		<!--div class="panel panel-default">
+	      <div class="panel-heading">
+		<h4 class="panel-title">
+		  <a href="/{{p.key.integer_id()}}">{{p.name | safe}}</a>
+		  <a class="accordion-toggle pull-right" data-toggle="collapse" data-parent="#accordion1" href="#{{p.key.integer_id()}}"
+		     aria-label="Click for description." role="button">
+		    <span class="glyphicon glyphicon-info-sign"></span></a>
+		</h4>
+	      </div>
+	      <div class="panel-collapse collapse" id="{{p.key.integer_id()}}">
+		<div class="panel-body">
+		  {{p.description | md | safe}}
+		  <p class="text-muted pull-right">Last updated: {{p.last_updated.strftime("%d %b %Y")}}</p>
+		</div>
+	      </div>
+	    </div-->
+	    {% endfor %}
+	    {% else %}
+	    <div class="pull-left" style="line-height: 34px">
+		Start by creating a new research project:
+            </div>
+	    {% endif %}
+
+	<a class="btn btn-default btn-new pull-right" href="/new_project" role="button">Create new project</a>
+    </div>
+
+    <div class="col-md-7">
+      <h2 role="heading" id="main-content">Recent activity</h2>
+      <hr>
+      {% if p_updates %}
+      <ul class="list-group" role="log">
+	{% for u in p_updates %}
+	<li class="list-group-item" role="listitem" tabindex="0"><small class="text-muted pull-right">{{u.date.strftime("%d %b %Y")}}</small>
+	  <img src="{{u.author.get().get_profile_image(20)}}" aria-hidden="true"/> {{u.description_html(u.key.parent().get()) | safe}}</li>
+	{% endfor %}
+      </ul>
+      {% else %}
+      <p>There's no recent activity in your projects</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% else %}
+<div class="jumbotron page-intro">
+  <div class="container">
+    <h1 role="heading" id="main-content" class="title">{{APP_NAME}}</h1>
+
+    <p role="banner" class="sub-title"> Proyecto de Investigacion</p>
+    <div class="actions">
+      <a class="btn btn-default btn-lg" href="/login" role="button">Sign In</a>
+      <a class="btn btn-default btn-lg" href="/signup" role="button">Sign Up</a>
+      <a class="btn btn-default btn-lg btn-grey" href="/auth/google" role="button">Sign In with Google</a>
+    </div>
+  </div>
+</div>
+
+<div id="overview">
+	<div class="container">
+		<p class="lead text-center" role="banner">
+			research proyect <br/>
+			
+		</p>
+	</div>
+</div>
+
+<div id="features">
+	<div class="container">
+	  <div class="row text-center" role="list">
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-th fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+                
+            </h2>
+            <p>
+                   
+            </p>
+        </div>
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-wrench fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+              
+            </h2>
+            <p>
+             
+            </p>
+        </div>
+	    <div class="clearfix visible-xs"></div>
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-eye fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+                
+            </h2>
+            <p>
+                
+            </p>
+        </div>
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+                
+            </h2>
+	      <p></p></div>
+	  </div>
+	  <div class="row text-center" role="list">
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-comment fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+                
+            </h2>
+	    </div>
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-bar-chart fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+               
+            </h2>
+	      <p></p></div>
+	    <div class="clearfix visible-xs"></div>
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-calculator fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+                
+            </h2>
+            <p>  </p></div>
+	    <div class="col-xs-6 col-md-3" role="listitem">
+            <h2 role="heading">
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-ellipsis-h fa-stack-1x fa-inverse"></i>
+                </span>
+                <br>
+                
+            </h2>
+            <p> </a></p></div>
+	  </div>
+	</div>
+</div>
+
+<!-- Hide navbar on home page until user scrolls down -->
+<script>
+    $(document).ready(function() {
+        // Hide the navbar when the page loads
+        $(".navbar").hide("slide", {"direction": "up"}, 400, function() {
+            $(".navbar").addClass("navbar-mod");
+        });
+
+        // Only show the navbar when the user scrolls down
+        $(document).scroll(function() {
+            if ($(this).scrollTop() > 1) {
+                $(".navbar").show("slide", {"direction": "up"});
+            } else {
+                $(".navbar").hide("slide", {"direction": "up"});
+            }
+        });
+    });
+</script>
+
+<style>
+    .navbar {
+        position: fixed;
+        width: 100%;
+    }
+
+    .navbar-mod {
+    	background: #556666;
+
+        -webkit-box-shadow: 0 4px 4px -2px #333;
+        -moz-box-shadow: 0 4px 4px -2px #333;
+        box-shadow: 0 4px 4px -2px #333;
+    }
+
+    #footer {
+        background: #fff;
+    }
+
+    #footer > * {
+        background: #fff;
+    }
+
+    #page-content {
+        margin-bottom: 0px;
+    }
+</style>
+
+{% endif %}
+
+{% endblock %}
